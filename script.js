@@ -20,28 +20,33 @@ $(function () {
 	});
 
 	$timer.on(clickEvent, function () {
+		if (timer) { stopTimer(); }
+		else { startTimer(); }
+	});
+
+	function startTimer() {
 		$timer.removeClass('start');
 		$timer.html(time);
 		$counter.removeClass('hidden');
-		if (timer) {
-			clearTimeout(timer);
-			timer = undefined;
-		}
-		else {
-			timer = setInterval(function () {
-				time = roundToOneDP(time - interval);
-				if (time >= 0) {
-					$timer.html(time);
-				}
-				else {
-					$timer.html('Stop!');
-					$timer.off(clickEvent);
-					$timer.addClass('stop');
-					clearTimeout(timer);
-				}
-			}, interval * 1000);
-		}
-	});
+
+		timer = setInterval(function () {
+			time = roundToOneDP(time - interval);
+			if (time >= 0) {
+				$timer.html(time);
+			}
+			else {
+				$timer.html('Stop!');
+				$timer.off(clickEvent);
+				$timer.addClass('stop');
+				clearTimeout(timer);
+			}
+		}, interval * 1000);
+	}
+
+	function stopTimer() {
+		clearTimeout(timer);
+		timer = undefined;
+	}
 
 	function roundToOneDP(num) {
 		return Math.round(num * 10) / 10;
